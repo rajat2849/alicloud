@@ -1,0 +1,21 @@
+version: '3'
+services:
+  frontend:
+    build: ./Incaendo_Client
+    ports:
+     - "3000:80"
+  backend:
+    build: ./Incaendo_Server
+    ports:
+      - "5000:5000"
+
+# version: '3'
+# services:
+#   frontend:
+#     image: 334846596010.dkr.ecr.ap-south-1.amazonaws.com/data:client_image
+#     ports:
+#      - "3000:80"
+#   backend:
+#     image: 334846596010.dkr.ecr.ap-south-1.amazonaws.com/data:server_image
+#     ports:
+#       - "5000:5000"      
