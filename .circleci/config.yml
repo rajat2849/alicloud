@@ -20,17 +20,16 @@ jobs:
 
 
  clean:  # name of job
-  executor: docker/docker
+  machine:
+    image: ubuntu-2204:2022.04.2
   steps:
-    # - setup_remote_docker:
-    #     version: 20.10.14 
-    - run:
-      name: "ECR Login"
-      command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
-    - run:
-      name: "Delete Image"
-      command: docker images -aq | xargs docker image rm 
-  
+    - checkout
+    - run: |
+        echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
+
+    - run: docker images -aq | xargs docker image rm
+
+
 #  test:  #name of job
 #   docker:
 #     - image: cimg/node:18.11.0
