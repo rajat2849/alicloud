@@ -61,15 +61,15 @@ jobs:
         path: ~/deploy
     - setup_remote_docker:
         version: 20.10.14 
-   #  - run:
-   #     name: "Building Docker Image"
-   #     command: docker build -t $ECR_REGISTRY/$APP_NAME:$IMAGE_TAG_CLIENT .
+    - run:
+       name: "Building Docker Image"
+       command: docker build -t registry-intl.ap-south-1.aliyuncs.com/repo12/data:client1 .
     - run:
        name: "ECR Login"
        command: echo "Rajat@1234" | docker login --username=rajat.singh@kellton.com --password-stdin registry-intl.ap-south-1.aliyuncs.com
-   #  - run:
-   #     name: "Pushing  Image into Amazon Elastic Container"
-   #     command: docker push $ECR_REGISTRY/$APP_NAME:$IMAGE_TAG_CLIENT
+    - run:
+       name: "Pushing  Image into Amazon Elastic Container"
+       command: docker push registry-intl.ap-south-1.aliyuncs.com/repo12/data:client1 
  
 
 
