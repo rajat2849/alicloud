@@ -69,13 +69,13 @@ jobs:
         version: 20.10.14 
     - run:
        name: "Building Docker Image"
-       command: docker build -t registry-intl.ap-south-1.aliyuncs.com/repo12/data:client1 .
+       command: docker build -t $ECR_REGISTRY/$REPO/$APP:$IMAGE_TAG_CLIENT .
     - run:
        name: "ECR Login"
-       command: echo "Rajat@1234" | docker login --username=rajat.singh@kellton.com --password-stdin registry-intl.ap-south-1.aliyuncs.com
+       command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
     - run:
-       name: "Pushing  Image into Amazon Elastic Container"
-       command: docker push registry-intl.ap-south-1.aliyuncs.com/repo12/data:client1 
+       name: "Pushing  Image into AliCloud Elastic Container"
+       command: docker push $ECR_REGISTRY/$REPO/$APP:$IMAGE_TAG_CLIENT
  
 
 
@@ -89,13 +89,13 @@ jobs:
         version: 20.10.14 
     - run:
        name: "Building Docker Image"
-       command: docker build -t registry-intl.ap-south-1.aliyuncs.com/repo12/data:server1 .
+       command: docker build -t $ECR_REGISTRY/$REPO/$APP:$IMAGE_TAG_SERVER .
     - run:
        name: "ECR Login"
-       command: echo "Rajat@1234" | docker login --username=rajat.singh@kellton.com --password-stdin registry-intl.ap-south-1.aliyuncs.com
+       command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
     - run:
-       name: "Pushing  Image into Amazon Elastic Container"
-       command: docker push registry-intl.ap-south-1.aliyuncs.com/repo12/data:server1 
+       name: "Pushing  Image into AliCloud Elastic Container"
+       command: docker push $ECR_REGISTRY/$REPO/$APP:$IMAGE_TAG_SERVER 
  
 
 
@@ -107,10 +107,10 @@ jobs:
          fingerprints:
            - "7b:fd:ca:d7:1b:de:4c:4b:29:03:e4:97:ef:40:76:d8"
      - run:
-         name: "Deploying the app into AWS EC2"
+         name: "Deploying the app into Alicloud ECS"
          command: |
                  ssh -v -o StrictHostKeyChecking=no root@198.11.174.204 "
-                 echo "Rajat@1234" | docker login --username=rajat.singh@kellton.com --password-stdin registry-intl.ap-south-1.aliyuncs.com &&                  
+                 echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY &&                  
                  docker ps -aq | xargs docker stop | xargs docker rm &&
                  docker images -aq | xargs docker image rm &&
                  rm docker-compose.yml && 
@@ -119,15 +119,15 @@ jobs:
                   version: '3'
                   services:
                      frontend:
-                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:client1
+                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:Client_Image
                         ports:
                         - "3000:80"
                      backend:
-                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:server1
+                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:Server_Image
                         ports:
                            - "5000:5000" "
      - run:
-         name: "running docker compose in ec2 instance"
+         name: "running docker compose in ecs instance"
          command: ssh -v -o StrictHostKeyChecking=no root@198.11.174.204 "
                   docker-compose up -d "
  
