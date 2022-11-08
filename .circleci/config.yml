@@ -22,8 +22,8 @@ jobs:
  clean:  # name of job
   executor: docker/docker
   steps:
-    - setup_remote_docker:
-        version: 20.10.14 
+    # - setup_remote_docker:
+    #     version: 20.10.14 
     - run:
       name: "ECR Login"
       command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
