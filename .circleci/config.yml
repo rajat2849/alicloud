@@ -69,13 +69,13 @@ jobs:
         version: 20.10.14 
     - run:
        name: "Building Docker Image"
-       command: docker build -t $ECR_REGISTRY/$APP:$IMAGE_TAG_CLIENT .
+       command: docker build -t $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_CLIENT .
     - run:
        name: "ECR Login"
        command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
     - run:
        name: "Pushing  Image into AliCloud Elastic Container"
-       command: docker push $ECR_REGISTRY/$APP:$IMAGE_TAG_CLIENT
+       command: docker push $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_CLIENT
  
 
 
@@ -89,13 +89,13 @@ jobs:
         version: 20.10.14 
     - run:
        name: "Building Docker Image"
-       command: docker build -t $ECR_REGISTRY/$APP:$IMAGE_TAG_SERVER .
+       command: docker build -t $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_SERVER .
     - run:
        name: "ECR Login"
        command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
     - run:
        name: "Pushing  Image into AliCloud Elastic Container"
-       command: docker push $ECR_REGISTRY/$APP:$IMAGE_TAG_SERVER 
+       command: docker push $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_SERVER 
  
 
 
