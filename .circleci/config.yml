@@ -6,7 +6,7 @@ orbs:
 workflows:
   clean_test_build_&_deploy:
     jobs:
-       - build
+       - build_client
       # - clean 
       # - build_client:
       #             requires:
