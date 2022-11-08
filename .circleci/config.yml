@@ -10,7 +10,9 @@ workflows:
       - build_server:
                   requires:
                     - build_client
-                    
+      - deploy:
+            requires:
+               - build_server             
       # - clean 
       # - build_client:
       #             requires:
