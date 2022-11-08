@@ -97,37 +97,37 @@ jobs:
  
 
 
-#  deploy:
-#    machine:
-#      image: ubuntu-2004:202010-01
-#    steps:
-#      - add_ssh_keys:
-#          fingerprints:
-#            - "cc:ea:56:1a:05:6e:61:13:b0:e7:c5:64:eb:2f:e4:f4"
-#      - run:
-#          name: "Deploying the app into AWS EC2"
-#          command: |
-#                  ssh -v -o StrictHostKeyChecking=no ec2-user@3.110.77.190 "
-#                  aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $ECR_REGISTRY &&                  
-#                  docker ps -aq | xargs docker stop | xargs docker rm &&
-#                  docker images -aq | xargs docker image rm &&
-#                  rm docker-compose.yml && 
-#                  tee -a docker-compose.yml \<<EOF
+ deploy:
+   machine:
+     image: ubuntu-2004:202010-01
+   steps:
+     - add_ssh_keys:
+         fingerprints:
+           - "7b:fd:ca:d7:1b:de:4c:4b:29:03:e4:97:ef:40:76:d8"
+     - run:
+         name: "Deploying the app into AWS EC2"
+         command: |
+                 ssh -v -o StrictHostKeyChecking=no root@198.11.174.204 "
+                 echo "Rajat@1234" | docker login --username=rajat.singh@kellton.com --password-stdin registry-intl.ap-south-1.aliyuncs.com &&                  
+                 docker ps -aq | xargs docker stop | xargs docker rm &&
+                 docker images -aq | xargs docker image rm &&
+                 rm docker-compose.yml && 
+                 tee -a docker-compose.yml \<<EOF
 
-#                   version: '3'
-#                   services:
-#                      frontend:
-#                         image: 334846596010.dkr.ecr.ap-south-1.amazonaws.com/data:client_image
-#                         ports:
-#                         - "3000:80"
-#                      backend:
-#                         image: 334846596010.dkr.ecr.ap-south-1.amazonaws.com/data:server_image
-#                         ports:
-#                            - "5000:5000" "
-#      - run:
-#          name: "running docker compose in ec2 instance"
-#          command: ssh -v -o StrictHostKeyChecking=no ec2-user@3.110.77.190 "
-#                   docker-compose up -d "
+                  version: '3'
+                  services:
+                     frontend:
+                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:client1
+                        ports:
+                        - "3000:80"
+                     backend:
+                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:server1
+                        ports:
+                           - "5000:5000" "
+     - run:
+         name: "running docker compose in ec2 instance"
+         command: ssh -v -o StrictHostKeyChecking=no root@198.11.174.204 "
+                  docker-compose up -d "
  
                  
 
