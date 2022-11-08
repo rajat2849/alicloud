@@ -66,7 +66,7 @@ jobs:
    #     command: docker build -t $ECR_REGISTRY/$APP_NAME:$IMAGE_TAG_CLIENT .
     - run:
        name: "ECR Login"
-       command: echo "Rajat@1234" | docker login --username=rajat.singh@kellton.com registry-intl.ap-south-1.aliyuncs.com
+       command: echo "Rajat@1234" | docker login --username=rajat.singh@kellton.com --password-stdin registry-intl.ap-south-1.aliyuncs.com
    #  - run:
    #     name: "Pushing  Image into Amazon Elastic Container"
    #     command: docker push $ECR_REGISTRY/$APP_NAME:$IMAGE_TAG_CLIENT
