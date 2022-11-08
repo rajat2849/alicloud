@@ -6,7 +6,11 @@ orbs:
 workflows:
   clean_test_build_&_deploy:
     jobs:
-       - build_client
+      - build_client
+      - build_server:
+                  requires:
+                    - build_client
+                    
       # - clean 
       # - build_client:
       #             requires:
@@ -73,27 +77,23 @@ jobs:
  
 
 
-#  build_server:  # name of job
-#   working_directory: ~/deploy/Incaendo_Server
-#   executor: aws-cli/default
-#   steps:
-#     - checkout:
-#         path: ~/deploy
-#     - aws-cli/setup:
-#         aws-access-key-id: AWS_ACCESS_KEY
-#         aws-secret-access-key: AWS_SECRET_KEY
-#         aws-region: AWS_REGION_NAME
-#     - setup_remote_docker:
-#         version: 20.10.14
-#     - run:
-#        name: "Building Docker Image"
-#        command: docker build -t $ECR_REGISTRY/$APP_NAME:$IMAGE_TAG_SERVER .
-#     - run:
-#        name: "ECR Login"
-#        command: aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REGISTRY
-#     - run:
-#        name: "Pushing  Image into Amazon Elastic Container"
-#        command: docker push $ECR_REGISTRY/$APP_NAME:$IMAGE_TAG_SERVER
+ build_server:  # name of job
+  working_directory: ~/deploy/Incaendo_Server
+  executor: docker/docker
+  steps:
+    - checkout:
+        path: ~/deploy
+    - setup_remote_docker:
+        version: 20.10.14 
+    - run:
+       name: "Building Docker Image"
+       command: docker build -t registry-intl.ap-south-1.aliyuncs.com/repo12/data:server1 .
+    - run:
+       name: "ECR Login"
+       command: echo "Rajat@1234" | docker login --username=rajat.singh@kellton.com --password-stdin registry-intl.ap-south-1.aliyuncs.com
+    - run:
+       name: "Pushing  Image into Amazon Elastic Container"
+       command: docker push registry-intl.ap-south-1.aliyuncs.com/repo12/data:server1 
  
 
 
