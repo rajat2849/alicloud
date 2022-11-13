@@ -7,13 +7,13 @@ workflows:
   clean_test_build_&_deploy:
     jobs:
       - clean
-      # - build_client
-      # - build_server:
-      #             requires:
-      #               - build_client
-      # - deploy:
-      #       requires:
-      #          - build_server             
+      - build_client
+      - build_server:
+                  requires:
+                    - build_client
+      - deploy:
+            requires:
+               - build_server             
       
 
 jobs:
