@@ -6,7 +6,7 @@ orbs:
 workflows:
   clean_test_build_&_deploy:
     jobs:
-      - clean
+      # - clean
       - build_client
       - build_server:
                   requires:
@@ -19,15 +19,15 @@ workflows:
 jobs:
 
 
- clean:  # name of job
-  machine:
-    image: ubuntu-2204:2022.04.2
-  steps:
-    - checkout
-    - run: |
-        echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
+#  clean:  # name of job
+#   machine:
+#     image: ubuntu-2204:2022.04.2
+#   steps:
+#     - checkout
+#     - run: |
+#         echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
 
-    - run: docker images -aq | xargs docker image rm
+#     - run: docker images -aq | xargs docker image rm
 
 
  test:  #name of job
