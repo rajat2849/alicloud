@@ -30,89 +30,89 @@ jobs:
     - run: docker images -aq | xargs docker image rm
 
 
-#  test:  #name of job
-#   docker:
-#     - image: cimg/node:18.11.0
-#   steps:
-#     - checkout
-#     - run:
-#        name: "Install NPM tool"
-#        command: npm install
-#     - run:
-#        name: "Running Test"  
-#        command: npm run test
+ test:  #name of job
+  docker:
+    - image: cimg/node:18.11.0
+  steps:
+    - checkout
+    - run:
+       name: "Install NPM tool"
+       command: npm install
+    - run:
+       name: "Running Test"  
+       command: npm run test
  
-#  build_client:  # name of job
-#   working_directory: ~/deploy/Incaendo_Client
-#   executor: docker/docker
-#   steps:
-#     - checkout:
-#         path: ~/deploy
-#     - setup_remote_docker:
-#         version: 20.10.14 
-#     - run:
-#        name: "Building Docker Image"
-#        command: docker build -t $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_CLIENT .
-#     - run:
-#        name: "ECR Login"
-#        command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
-#     - run:
-#        name: "Pushing  Image into AliCloud Elastic Container"
-#        command: docker push $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_CLIENT
- 
-
-
-#  build_server:  # name of job
-#   working_directory: ~/deploy/Incaendo_Server
-#   executor: docker/docker
-#   steps:
-#     - checkout:
-#         path: ~/deploy
-#     - setup_remote_docker:
-#         version: 20.10.14 
-#     - run:
-#        name: "Building Docker Image"
-#        command: docker build -t $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_SERVER .
-#     - run:
-#        name: "ECR Login"
-#        command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
-#     - run:
-#        name: "Pushing  Image into AliCloud Elastic Container"
-#        command: docker push $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_SERVER 
+ build_client:  # name of job
+  working_directory: ~/deploy/Incaendo_Client
+  executor: docker/docker
+  steps:
+    - checkout:
+        path: ~/deploy
+    - setup_remote_docker:
+        version: 20.10.14 
+    - run:
+       name: "Building Docker Image"
+       command: docker build -t $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_CLIENT .
+    - run:
+       name: "ECR Login"
+       command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
+    - run:
+       name: "Pushing  Image into AliCloud Elastic Container"
+       command: docker push $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_CLIENT
  
 
 
-#  deploy:
-#    machine:
-#      image: ubuntu-2004:202010-01
-#    steps:
-#      - add_ssh_keys:
-#          fingerprints:
-#            - "7b:fd:ca:d7:1b:de:4c:4b:29:03:e4:97:ef:40:76:d8"
-#      - run:
-#          name: "Deploying the app into Alicloud ECS"
-#          command: |
-#                  ssh -v -o StrictHostKeyChecking=no root@198.11.174.204 "
-#                  echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY &&                  
-#                  docker ps -aq | xargs docker stop | xargs docker rm &&
-#                  docker images -aq | xargs docker image rm &&
-#                  rm docker-compose.yml && 
-#                  tee -a docker-compose.yml \<<EOF
+ build_server:  # name of job
+  working_directory: ~/deploy/Incaendo_Server
+  executor: docker/docker
+  steps:
+    - checkout:
+        path: ~/deploy
+    - setup_remote_docker:
+        version: 20.10.14 
+    - run:
+       name: "Building Docker Image"
+       command: docker build -t $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_SERVER .
+    - run:
+       name: "ECR Login"
+       command: echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY
+    - run:
+       name: "Pushing  Image into AliCloud Elastic Container"
+       command: docker push $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_SERVER 
+ 
 
-#                   version: '3'
-#                   services:
-#                      frontend:
-#                         image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:Client_Image
-#                         ports:
-#                         - "3000:80"
-#                      backend:
-#                         image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:Server_Image
-#                         ports:
-#                            - "5000:5000" "
-#      - run:
-#          name: "running docker compose in ecs instance"
-#          command: ssh -v -o StrictHostKeyChecking=no root@198.11.174.204 "
-#                   docker-compose up -d "
+
+ deploy:
+   machine:
+     image: ubuntu-2004:202010-01
+   steps:
+     - add_ssh_keys:
+         fingerprints:
+           - "7b:fd:ca:d7:1b:de:4c:4b:29:03:e4:97:ef:40:76:d8"
+     - run:
+         name: "Deploying the app into Alicloud ECS"
+         command: |
+                 ssh -v -o StrictHostKeyChecking=no root@198.11.174.204 "
+                 echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY &&                  
+                 docker ps -aq | xargs docker stop | xargs docker rm &&
+                 docker images -aq | xargs docker image rm &&
+                 rm docker-compose.yml && 
+                 tee -a docker-compose.yml \<<EOF
+
+                  version: '3'
+                  services:
+                     frontend:
+                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:Client_Image
+                        ports:
+                        - "3000:80"
+                     backend:
+                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:Server_Image
+                        ports:
+                           - "5000:5000" "
+     - run:
+         name: "running docker compose in ecs instance"
+         command: ssh -v -o StrictHostKeyChecking=no root@198.11.174.204 "
+                  docker-compose up -d "
  
                  
 
