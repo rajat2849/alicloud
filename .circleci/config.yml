@@ -102,11 +102,11 @@ jobs:
                   version: '3'
                   services:
                      frontend:
-                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:Client_Image
+                        image: registry-intl.ap-south-1.aliyuncs.com/alicloud1/images:Client_Image
                         ports:
                         - "3000:80"
                      backend:
-                        image: registry-intl.ap-south-1.aliyuncs.com/repo12/data:Server_Image
+                        image: registry-intl.ap-south-1.aliyuncs.com/alicloud1/images:Server_Image
                         ports:
                            - "5000:5000" "
      - run:
