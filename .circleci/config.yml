@@ -40,11 +40,11 @@ jobs:
 #        command: npm run test
  
  build_client:  # name of job
-  working_directory: ~/
+  working_directory: ~/alicloud
   executor: docker/docker
   steps:
     - checkout:
-        path: ~/deploy
+        path: ~/alicloud
     - setup_remote_docker:
         version: 20.10.14 
     - run:
