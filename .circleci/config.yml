@@ -73,6 +73,6 @@ jobs:
                  echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_USERNAME --password-stdin $ECR_REGISTRY &&                  
                  docker ps -aq | xargs docker stop | xargs docker rm &&
                  docker images -aq | xargs docker image rm &&
-                 docker run -d -p 80:3000 $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_CLIENT "
+                 docker run -d -p 3000:3000 $ECR_REGISTRY/$REPO/$APP_NAME:$IMAGE_TAG_CLIENT "
 
 # VS Code Extension Version: 1.2.0
