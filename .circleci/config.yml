@@ -40,7 +40,7 @@ jobs:
 #        command: npm run test
  
  build_client:  # name of job
-  working_directory: ~/deploy/Incaendo_Client
+  working_directory: ~/
   executor: docker/docker
   steps:
     - checkout:
